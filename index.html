@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Scientific Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-container" aria-hidden="true">
+        <!-- We use a subtle CSS animation fallback that mimics the requested video feel -->
+        <div class="bg-video-fallback"></div>
+        <div class="bg-overlay-dark"></div>
+        <div class="bg-gradient bg-blob-1"></div>
+        <div class="bg-gradient bg-blob-2"></div>
+        <div class="bg-gradient bg-blob-3"></div>
+        <div class="bg-particles"></div>
+    </div>
+
+    <div class="app-wrapper">
+        <header class="app-header">
+            <div class="brand">
+                <h1>SCIENTIFIC <span>CALCULATOR</span></h1>
+            </div>
+            <div class="status">
+                <span class="status-dot"></span> SYSTEM READY
+            </div>
+        </header>
+
+        <nav class="mode-selector">
+            <button class="mode-btn active" data-target="mode-scientific">Scientific</button>
+            <button class="mode-btn" data-target="mode-programmer">Programmer</button>
+            <button class="mode-btn" data-target="mode-statistics">Statistics</button>
+            <button class="mode-btn" data-target="mode-graphing">Graphing</button>
+        </nav>
+
+        <main class="calculator-panel">
+            
+            <!-- History Drawer (Absolute positioned within panel) -->
+            <aside class="history-drawer" id="history-drawer">
+                <div class="history-header">
+                    <h3>History</h3>
+                    <button id="clear-history" class="icon-btn" aria-label="Clear History">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                    </button>
+                </div>
+                <div class="history-list" id="history-list">
+                    <!-- History items injected here -->
+                </div>
+            </aside>
+
+            <!-- SCIENTIFIC MODE -->
+            <div id="mode-scientific" class="mode-view active">
+                <div class="display-container">
+                    <div class="display-top">
+                        <div class="indicators">
+                            <span id="angle-indicator">DEG</span>
+                            <span id="memory-indicator" class="hidden">M</span>
+                        </div>
+                        <button class="history-toggle" id="history-toggle" aria-label="Toggle History">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+                        </button>
+                    </div>
+                    <div class="expression-line" id="expression-display"></div>
+                    <div class="result-line" id="result-display">0</div>
+                </div>
+
+                <div class="controls-bar">
+                    <div class="angle-toggle" id="angle-toggle">
+                        <button class="active" data-angle="DEG">DEG</button>
+                        <button data-angle="RAD">RAD</button>
+                        <button data-angle="GRAD">GRAD</button>
+                    </div>
+                    <div class="memory-ops">
+                        <button data-action="MC">MC</button>
+                        <button data-action="MR">MR</button>
+                        <button data-action="M+">M+</button>
+                        <button data-action="M-">M-</button>
+                        <button data-action="MS">MS</button>
+                    </div>
+                </div>
+
+                <div class="keypad-layout">
+                    <div class="sci-keys">
+                        <button class="btn btn-sci" data-action="2nd" id="btn-2nd">2nd</button>
+                        <button class="btn btn-sci" data-val="π">π</button>
+                        <button class="btn btn-sci" data-val="e">e</button>
+                        <button class="btn btn-sci" data-val="ANS">ANS</button>
+                        
+                        <button class="btn btn-sci fn-primary" data-val="sin(">sin</button>
+                        <button class="btn btn-sci fn-primary" data-val="cos(">cos</button>
+                        <button class="btn btn-sci fn-primary" data-val="tan(">tan</button>
+                        <button class="btn btn-sci" data-val="%">%</button>
+                        
+                        <button class="btn btn-sci fn-secondary hidden" data-val="asin(">asin</button>
+                        <button class="btn btn-sci fn-secondary hidden" data-val="acos(">acos</button>
+                        <button class="btn btn-sci fn-secondary hidden" data-val="atan(">atan</button>
+                        <button class="btn btn-sci fn-secondary hidden" data-val="mod">mod</button>
+
+                        <button class="btn btn-sci fn-primary" data-val="ln(">ln</button>
+                        <button class="btn btn-sci fn-primary" data-val="log(">log</button>
+                        <button class="btn btn-sci fn-primary" data-val="log₂(">log₂</button>
+                        <button class="btn btn-sci" data-val="√(">√</button>
+
+                        <button class="btn btn-sci fn-secondary hidden" data-val="sinh(">sinh</button>
+                        <button class="btn btn-sci fn-secondary hidden" data-val="cosh(">cosh</button>
+                        <button class="btn btn-sci fn-secondary hidden" data-val="tanh(">tanh</button>
+                        <button class="btn btn-sci fn-secondary hidden" data-val="∛(">∛</button>
+
+                        <button class="btn btn-sci fn-primary" data-val="x²">x²</button>
+                        <button class="btn btn-sci fn-primary" data-val="x³">x³</button>
+                        <button class="btn btn-sci fn-primary" data-val="xʸ">xʸ</button>
+                        <button class="btn btn-sci" data-val="ⁿ√">ⁿ√x</button>
+                        
+                        <button class="btn btn-sci fn-secondary hidden" data-val="10^">10ˣ</button>
+                        <button class="btn btn-sci fn-secondary hidden" data-val="2^">2ˣ</button>
+                        <button class="btn btn-sci fn-secondary hidden" data-val="e^">eˣ</button>
+                        <button class="btn btn-sci fn-secondary hidden" data-val="1/x">1/x</button>
+
+                        <button class="btn btn-sci" data-val="!">!</button>
+                        <button class="btn btn-sci" data-val="abs(">abs</button>
+                        <button class="btn btn-sci" data-val="E">EXP</button>
+                        <button class="btn btn-sci" data-action="rand">RND</button>
+                    </div>
+
+                    <div class="main-keys">
+                        <button class="btn btn-action" data-action="AC">AC</button>
+                        <button class="btn btn-action" data-action="DEL">⌫</button>
+                        <button class="btn btn-op" data-val="(">(</button>
+                        <button class="btn btn-op" data-val=")">)</button>
+                        
+                        <button class="btn btn-num" data-val="7">7</button>
+                        <button class="btn btn-num" data-val="8">8</button>
+                        <button class="btn btn-num" data-val="9">9</button>
+                        <button class="btn btn-op" data-val="÷">÷</button>
+                        
+                        <button class="btn btn-num" data-val="4">4</button>
+                        <button class="btn btn-num" data-val="5">5</button>
+                        <button class="btn btn-num" data-val="6">6</button>
+                        <button class="btn btn-op" data-val="×">×</button>
+                        
+                        <button class="btn btn-num" data-val="1">1</button>
+                        <button class="btn btn-num" data-val="2">2</button>
+                        <button class="btn btn-num" data-val="3">3</button>
+                        <button class="btn btn-op" data-val="−">−</button>
+                        
+                        <button class="btn btn-num" data-val="0">0</button>
+                        <button class="btn btn-num" data-val=".">.</button>
+                        <button class="btn btn-num" data-action="±">±</button>
+                        <button class="btn btn-op" data-val="+">+</button>
+                        
+                        <button class="btn btn-equals" data-action="=">=</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROGRAMMER MODE -->
+            <div id="mode-programmer" class="mode-view">
+                <div class="display-container prog-display">
+                    <div class="result-line" id="prog-result">0</div>
+                    <div class="bases">
+                        <div class="base-row active" data-base="HEX"><span>HEX</span><span class="base-val" id="prog-hex">0</span></div>
+                        <div class="base-row" data-base="DEC"><span>DEC</span><span class="base-val" id="prog-dec">0</span></div>
+                        <div class="base-row" data-base="OCT"><span>OCT</span><span class="base-val" id="prog-oct">0</span></div>
+                        <div class="base-row" data-base="BIN"><span>BIN</span><span class="base-val" id="prog-bin">0</span></div>
+                    </div>
+                </div>
+                <div class="keypad-layout prog-layout">
+                    <div class="prog-ops">
+                        <button class="btn btn-sci" data-prog-op="AND">AND</button>
+                        <button class="btn btn-sci" data-prog-op="OR">OR</button>
+                        <button class="btn btn-sci" data-prog-op="XOR">XOR</button>
+                        <button class="btn btn-sci" data-prog-op="NOT">NOT</button>
+                        <button class="btn btn-sci" data-prog-op="LSH">LSH</button>
+                        <button class="btn btn-sci" data-prog-op="RSH">RSH</button>
+                    </div>
+                    <div class="main-keys prog-keys">
+                        <button class="btn btn-num hex-key disabled" data-val="A">A</button>
+                        <button class="btn btn-num hex-key disabled" data-val="B">B</button>
+                        <button class="btn btn-action" data-action="AC">AC</button>
+                        <button class="btn btn-action" data-action="DEL">⌫</button>
+                        
+                        <button class="btn btn-num hex-key disabled" data-val="C">C</button>
+                        <button class="btn btn-num hex-key disabled" data-val="D">D</button>
+                        <button class="btn btn-num num-key" data-val="7">7</button>
+                        <button class="btn btn-num num-key" data-val="8">8</button>
+                        
+                        <button class="btn btn-num hex-key disabled" data-val="E">E</button>
+                        <button class="btn btn-num hex-key disabled" data-val="F">F</button>
+                        <button class="btn btn-num num-key" data-val="4">4</button>
+                        <button class="btn btn-num num-key" data-val="5">5</button>
+                        
+                        <button class="btn btn-num num-key" data-val="9">9</button>
+                        <button class="btn btn-num num-key" data-val="6">6</button>
+                        <button class="btn btn-num num-key" data-val="1">1</button>
+                        <button class="btn btn-num num-key" data-val="2">2</button>
+                        
+                        <button class="btn btn-num num-key" data-val="3">3</button>
+                        <button class="btn btn-num num-key" data-val="0">0</button>
+                        <button class="btn btn-equals" style="grid-column: span 2" data-prog-op="=">=</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STATISTICS MODE -->
+            <div id="mode-statistics" class="mode-view">
+                <div class="stat-container">
+                    <div class="stat-input-area">
+                        <label for="stat-input">Enter Dataset (comma separated)</label>
+                        <input type="text" id="stat-input" placeholder="e.g. 10, 20, 25.5, 30" autocomplete="off">
+                        <div class="stat-actions">
+                            <button id="stat-calc" class="btn btn-op">Calculate</button>
+                            <button id="stat-clear" class="btn btn-action">Clear</button>
+                        </div>
+                    </div>
+                    <div class="stat-results">
+                        <div class="stat-card"><span>Count (n)</span><strong id="stat-n">-</strong></div>
+                        <div class="stat-card"><span>Sum (Σx)</span><strong id="stat-sum">-</strong></div>
+                        <div class="stat-card"><span>Mean (x̄)</span><strong id="stat-mean">-</strong></div>
+                        <div class="stat-card"><span>Median</span><strong id="stat-median">-</strong></div>
+                        <div class="stat-card"><span>Mode</span><strong id="stat-mode">-</strong></div>
+                        <div class="stat-card"><span>Min</span><strong id="stat-min">-</strong></div>
+                        <div class="stat-card"><span>Max</span><strong id="stat-max">-</strong></div>
+                        <div class="stat-card"><span>Range</span><strong id="stat-range">-</strong></div>
+                        <div class="stat-card"><span>Variance (s²)</span><strong id="stat-var">-</strong></div>
+                        <div class="stat-card"><span>Std Dev (s)</span><strong id="stat-sd">-</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GRAPHING MODE -->
+            <div id="mode-graphing" class="mode-view">
+                <div class="graph-container">
+                    <div class="graph-header">
+                        <label for="graph-input">f(x) = </label>
+                        <input type="text" id="graph-input" placeholder="sin(x) * x" autocomplete="off">
+                        <button id="graph-plot" class="btn btn-op">Plot</button>
+                        <button id="graph-reset" class="btn btn-action" title="Reset View">⟲</button>
+                    </div>
+                    <div class="canvas-wrapper">
+                        <canvas id="graph-canvas"></canvas>
+                        <div class="graph-controls">
+                            <button id="graph-zoom-in">+</button>
+                            <button id="graph-zoom-out">-</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
